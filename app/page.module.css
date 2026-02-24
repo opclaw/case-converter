@@ -1,0 +1,73 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.input {
+  width: 100%;
+  min-height: 150px;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 600px) {
+  .buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.caseBtn {
+  padding: 12px 8px;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.caseBtn:hover {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+.output {
+  width: 100%;
+  min-height: 150px;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-bottom: 16px;
+  resize: vertical;
+  background: #f8f9fa;
+}
+
+.copyBtn {
+  width: 100%;
+  padding: 12px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
