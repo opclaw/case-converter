@@ -1,100 +1,91 @@
 'use client'
 
-import { useState } from 'react'
-import styles from './page.module.css'
+import { useState, useCallback } from 'react'
 
-type CaseType = 'upper' | 'lower' | 'title' | 'sentence' | 'camel' | 'snake' | 'kebab' | 'alternating'
+const convertTypes = [
+  { id: 'uppercase', label: 'UPPERCASE', convert: (s: string) => s.toUpperCase() },
+  { id: 'lowercase', label: 'lowercase', convert: (s: string) => s.toLowerCase() },
+  { id: 'title', label: 'Title Case', convert: (s: string) => s.replace(/\w\S*/g, (t) => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase()) },
+  { id: 'sentence', label: 'Sentence case', convert: (s: string) => s.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, (c) => c.toUpperCase()) },
+  { id: 'camel', label: 'camelCase', convert: (s: string) => s.replace(/\w\S*/g, (t, i) => i ? t.charAt(0).toUpperCase() + t.substr(1).toLowerCase() : t.toLowerCase()) },
+  { id: 'snake', label: 'snake_case', convert: (s: string) => s.replace(/\s+/g, '_').toLowerCase() },
+  { id: 'kebab', label: 'kebab-case', convert: (s: string) => s.replace(/\s+/g, '-').toLowerCase() },
+]
 
 export default function Home() {
   const [input, setInput] = useState('')
-  const [output, setOutput] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState<string | null>(null)
 
-  const convertCase = (type: CaseType) => {
-    if (!input) return
-
-    let result = ''
-    switch (type) {
-      case 'upper':
-        result = input.toUpperCase()
-        break
-      case 'lower':
-        result = input.toLowerCase()
-        break
-      case 'title':
-        result = input.toLowerCase().replace(/\b\w/g, l => l.toUpperCase())
-        break
-      case 'sentence':
-        result = input.toLowerCase().replace(/(^|\.|\!|\?)\s*\w/g, l => l.toUpperCase())
-        break
-      case 'camel':
-        result = input.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase())
-        break
-      case 'snake':
-        result = input.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '')
-        break
-      case 'kebab':
-        result = input.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
-        break
-      case 'alternating':
-        result = input.split('').map((c, i) => i % 2 === 0 ? c.toLowerCase() : c.toUpperCase()).join('')
-        break
-    }
-    setOutput(result)
-  }
-
-  const copyText = () => {
-    navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
-  const buttons: { type: CaseType; label: string }[] = [
-    { type: 'upper', label: 'UPPER CASE' },
-    { type: 'lower', label: 'lower case' },
-    { type: 'title', label: 'Title Case' },
-    { type: 'sentence', label: 'Sentence case' },
-    { type: 'camel', label: 'camelCase' },
-    { type: 'snake', label: 'snake_case' },
-    { type: 'kebab', label: 'kebab-case' },
-    { type: 'alternating', label: 'aLtErNaTiNg' },
-  ]
+  const copyToClipboard = useCallback((value: string, id: string) => {
+    navigator.clipboard.writeText(value)
+    setCopied(id)
+    setTimeout(() => setCopied(null), 2000)
+  }, [])
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>🔄 Case Converter</h1>
-      
-      <textarea
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Enter your text here..."
-        className={styles.input}
-      />
+    <div className="min-h-screen flex flex-col bg-slate-50">
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center text-2xl shadow-lg">Aa</div>
+              <div>
+                <h1 className="text-xl font-bold text-slate-900">Case Converter</h1>
+                <p className="text-sm text-slate-500">Change text case</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
 
-      <div className={styles.buttons}>
-        {buttons.map(({ type, label }) => (
-          <button
-            key={type}
-            onClick={() => convertCase(type)}
-            className={styles.caseBtn}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+      <section className="bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+          <div className="text-center max-w-3xl mx-auto">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 text-3xl shadow-xl mb-6">Aa</div>
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Case Converter</h2>
+            <p className="text-lg md:text-xl text-slate-600">Convert text between different case formats instantly.</p>
+          </div>
+        </div>
+      </section>
 
-      {output && (
-        <>
+      <main className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-6 md:p-8">
           <textarea
-            value={output}
-            readOnly
-            className={styles.output}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Enter text to convert..."
+            className="w-full h-40 textarea mb-6"
           />
-          <button onClick={copyText} className={styles.copyBtn}>
-            {copied ? '✓ Copied!' : '📋 Copy Result'}
-          </button>
-        </>
-      )}
+
+          <div className="space-y-3">
+            {convertTypes.map(({ id, label, convert }) => {
+              const result = input ? convert(input) : ''
+              return (
+                <div key={id} className="bg-slate-50 rounded-xl p-4 border border-slate-200 flex items-center justify-between">
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs font-medium text-slate-500 mb-1">{label}</div>
+                    <div className="font-mono text-sm text-slate-900 truncate">{result || '—'}</div>
+                  </div>
+                  {result && (
+                    <button
+                      onClick={() => copyToClipboard(result, id)}
+                      className="ml-4 text-xs font-medium text-teal-600 hover:text-teal-700 whitespace-nowrap"
+                    >
+                      {copied === id ? '✓ Copied!' : '📋 Copy'}
+                    </button>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </main>
+
+      <footer className="bg-slate-900 text-slate-400 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-sm">© 2024 SmartOK Tools. Free online tools.</p>
+        </div>
+      </footer>
     </div>
   )
 }
