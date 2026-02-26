@@ -3,6 +3,9 @@ import './globals.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://case-converter.vercel.app'),
+  alternates: {
+    canonical: 'https://case-converter.vercel.app',
+  },
   title: 'Case Converter — Change Text Case | Free Online Tool',
   description: 'Convert text between different case formats: uppercase, lowercase, title case, sentence case, and more.',
   keywords: ['case converter', 'text case', 'uppercase', 'lowercase', 'title case', 'camel case'],
