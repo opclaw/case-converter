@@ -17,11 +17,18 @@ export const metadata: Metadata = {
     siteName: 'Case Converter',
     title: 'Case Converter — Change Text Case',
     description: 'Convert text between different case formats.',
+    images: [{
+      url: '/og-image.svg',
+      width: 1200,
+      height: 630,
+      alt: 'Case Converter - Change Text Case',
+    }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Converter',
     description: 'Convert text between different case formats.',
+    images: ['/og-image.svg'],
   },
   robots: { index: true, follow: true },
 }
